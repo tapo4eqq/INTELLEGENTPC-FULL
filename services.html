@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги - IntelligentPC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="accessibility.css">
+    <style>
+        /* Стили для фильтра */
+        .services-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 10px;
+            border: 1px solid #4facfe;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            color: #4facfe;
+            font-size: 14px;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid #4facfe;
+            border-radius: 5px;
+            color: white;
+        }
+        
+        .filter-group input {
+            min-width: 250px;
+        }
+        
+        .filter-button {
+            align-self: flex-end;
+            padding: 8px 20px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.7);
+        }
+        
+        /* Остальные стили остаются без изменений */
+        .services-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .service-card {
+            flex: 0 0 auto;
+            width: 300px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .services-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .services-grid::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .services-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                flex-wrap: wrap;
+                overflow-x: visible;
+            }
+            
+            .service-card {
+                width: 100%;
+            }
+            
+            .services-filter {
+                flex-direction: column;
+            }
+            
+            .filter-button {
+                align-self: stretch;
+            }
+        }
+
+        
+         /* Обновленные стили для кнопки "Наверх" */
+    .back-to-top {
+        position: fixed;
+        bottom: 90px; /* Остается выше кнопки доступности */
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 999;
+        border: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
+    
+    .back-to-top:hover {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(79, 172, 254, 0.7);
+    }
+    
+    .back-to-top:active {
+        transform: translateY(1px);
+    }
+    
+    .back-to-top.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <header class="holographic">
+        <div class="header-container">
+            <div class="logo" data-text="IntelligentPC">
+                <a href="index.html" class="glow">IntelligentPC</a>
+                <div class="hologram-effect"></div>
+            </div>
+            
+            <div class="header-right">
+                <div class="contact-info pulse">
+                    <i class="fas fa-phone-alt"></i> 
+                    <span class="neon-text">+7 (962) 910-91-44</span>
+                </div>
+                
+                <nav class="cyber-nav">
+                    <a href="support.html" class="nav-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Поддержка</span>
+                    </a>
+                    <a href="servers.html" class="nav-btn">
+                        <i class="fas fa-server"></i>
+                        <span>Серверы</span>
+                    </a>
+                    <a href="services.html" class="nav-btn active">
+                        <i class="fas fa-cogs"></i>
+                        <span>Услуги</span>
+                    </a>
+                    <a href="cart.html" class="nav-btn cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Корзина</span>
+                        <span class="cart-counter">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="services-container">
+            <h1 class="page-title neon-text">ПРОФЕССИОНАЛЬНЫЕ УСЛУГИ</h1>
+            <p class="page-subtitle">Комплексные решения для вашего бизнеса и дома</p>
+            
+            <!-- Фильтр услуг -->
+            <div class="services-filter">
+                <div class="filter-group">
+                    <label for="category-filter">Категория:</label>
+                    <select id="category-filter">
+                        <option value="all">Все категории</option>
+                        <option value="business">Для бизнеса</option>
+                        <option value="home">Для дома</option>
+                        <option value="other">Другие услуги</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="price-filter">Цена до:</label>
+                    <select id="price-filter">
+                        <option value="all">Любая цена</option>
+                        <option value="50000">До 50 000 ₽</option>
+                        <option value="100000">До 100 000 ₽</option>
+                        <option value="200000">До 200 000 ₽</option>
+                        <option value="500000">До 500 000 ₽</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="search-filter">Поиск:</label>
+                    <input type="text" id="search-filter" placeholder="Введите ключевые слова...">
+                </div>
+                
+                <button class="filter-button" id="apply-filter">
+                    <i class="fas fa-filter"></i> Применить
+                </button>
+            </div>
+            
+            <!-- Контейнер для услуг -->
+            <div id="services-content">
+                <!-- Бизнес услуги -->
+                <div class="services-tab" data-category="business">
+                    <h2 class="tab-title">Услуги для бизнеса</h2>
+                    <div class="services-grid">
+                        <div class="service-card glass-panel" data-price="299999" data-keywords="ит инфраструктура корпоративная сеть серверы">
+                            <div class="service-icon">
+                                <i class="fas fa-network-wired"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>ИТ-ИНФРАСТРУКТУРА</h3>
+                            <p>Проектирование и внедрение корпоративной IT-инфраструктуры</p>
+                            <div class="service-price">от 299 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="199999" data-keywords="кибербезопасность защита безопасность данные">
+                            <div class="service-icon">
+                                <i class="fas fa-shield-alt"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>КИБЕРБЕЗОПАСНОСТЬ</h3>
+                            <p>Комплексная защита вашего бизнеса от киберугроз</p>
+                            <div class="service-price">от 199 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="149999" data-keywords="облако миграция облачные сервисы">
+                            <div class="service-icon">
+                                <i class="fas fa-cloud"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>ОБЛАЧНЫЕ РЕШЕНИЯ</h3>
+                            <p>Миграция и настройка облачных сервисов для вашего бизнеса</p>
+                            <div class="service-price">от 149 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Домашние услуги -->
+                <div class="services-tab" data-category="home">
+                    <h2 class="tab-title">Услуги для дома</h2>
+                    <div class="services-grid">
+                        <div class="service-card glass-panel" data-price="99999" data-keywords="умный дом автоматизация iot устройства">
+                            <div class="service-icon">
+                                <i class="fas fa-tv"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>УМНЫЙ ДОМ</h3>
+                            <p>Интеграция умных устройств в единую систему управления</p>
+                            <div class="service-price">от 99 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="49999" data-keywords="игры игровой пк настройка">
+                            <div class="service-icon">
+                                <i class="fas fa-gamepad"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>ИГРОВЫЕ СИСТЕМЫ</h3>
+                            <p>Настройка игровых ПК и создание игровых зон</p>
+                            <div class="service-price">от 49 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="79999" data-keywords="vr виртуальная реальность очки игры">
+                            <div class="service-icon">
+                                <i class="fas fa-vr-cardboard"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>VR-РЕШЕНИЯ</h3>
+                            <p>Виртуальная реальность для развлечений и обучения</p>
+                            <div class="service-price">от 79 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Другие услуги -->
+                <div class="services-tab" data-category="other">
+                    <h2 class="tab-title">Другие услуги</h2>
+                    <div class="services-grid">
+                        <div class="service-card glass-panel" data-price="199999" data-keywords="программирование разработка софт">
+                            <div class="service-icon">
+                                <i class="fas fa-laptop-code"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>ПРОГРАММИРОВАНИЕ</h3>
+                            <p>Разработка программного обеспечения под заказ</p>
+                            <div class="service-price">от 199 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="9999" data-keywords="консалтинг консультация it помощь">
+                            <div class="service-icon">
+                                <i class="fas fa-chart-line"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>ИТ-КОНСАЛТИНГ</h3>
+                            <p>Профессиональные консультации по IT-вопросам</p>
+                            <div class="service-price">от 9 999 ₽/час</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="service-card glass-panel" data-price="499999" data-keywords="ии искусственный интеллект ai машинное обучение">
+                            <div class="service-icon">
+                                <i class="fas fa-robot"></i>
+                                <div class="icon-pulse"></div>
+                            </div>
+                            <h3>AI-ИНТЕГРАЦИЯ</h3>
+                            <p>Внедрение искусственного интеллекта в ваш бизнес</p>
+                            <div class="service-price">от 499 999 ₽</div>
+                            <button class="cyber-button small">
+                                <i class="fas fa-plus"></i>
+                                <span>ЗАКАЗАТЬ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="cyber-footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>КОНТАКТЫ</h3>
+                <div class="footer-contact">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+7 (962) 910-91-44</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Москва, Ленинский пр-т 45</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-clock"></i>
+                    <span>24/7 доступ</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>НАВИГАЦИЯ</h3>
+                <ul class="footer-nav">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="config.html">Конфигуратор</a></li>
+                    <li><a href="servers.html">Серверы</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>ТЕХНОЛОГИИ</h3>
+                <div class="tech-tags">
+                    <span>AI</span>
+                    <span>Quantum</span>
+                    <span>Neural</span>
+                    <span>VR-ready</span>
+                    <span>Blockchain</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>СОЦСЕТИ</h3>
+                <div class="social-grid">
+                    <a href="https://vk.com/magnoliagod" class="social-icon"><i class="fab fa-vk"></i></a>
+                    <a href="https://t.me/magnoliagod" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://github.com/tapo4eqq" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                <span>© 2025 INTELLIGENTPC | QUANTUM COMPUTING DIVISION</span>
+                <span id="counter">VISITORS: 0</span>
+            </div>
+            <div class="footer-code">
+                <span>SYSTEM STATUS: <span class="online">ONLINE</span></span>
+                <span>VERSION: 3.1.4</span>
+            </div>
+        </div>
+    </footer>
+
+<button class="back-to-top" title="Наверх" aria-label="Вернуться к началу страницы">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+
+    <script>
+
+    // Скрипт для кнопки "Наверх" (можно также вынести в отдельный файл)
+    document.addEventListener('DOMContentLoaded', function() {
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        if (backToTopButton) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('active');
+                } else {
+                    backToTopButton.classList.remove('active');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+
+
+        // Функция фильтрации услуг
+        function filterServices() {
+            const category = document.getElementById('category-filter').value;
+            const price = document.getElementById('price-filter').value;
+            const search = document.getElementById('search-filter').value.toLowerCase();
+            
+            // Получаем все карточки услуг
+            const serviceCards = document.querySelectorAll('.service-card');
+            const serviceTabs = document.querySelectorAll('.services-tab');
+            
+            // Сначала скрываем все
+            serviceTabs.forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Фильтруем карточки
+            serviceCards.forEach(card => {
+                const cardCategory = card.closest('.services-tab').getAttribute('data-category');
+                const cardPrice = parseInt(card.getAttribute('data-price'));
+                const cardKeywords = card.getAttribute('data-keywords').toLowerCase();
+                
+                // Проверяем соответствие фильтрам
+                const categoryMatch = category === 'all' || cardCategory === category;
+                const priceMatch = price === 'all' || cardPrice <= parseInt(price);
+                const searchMatch = search === '' || 
+                    cardKeywords.includes(search) || 
+                    card.querySelector('h3').textContent.toLowerCase().includes(search) || 
+                    card.querySelector('p').textContent.toLowerCase().includes(search);
+                
+                if (categoryMatch && priceMatch && searchMatch) {
+                    card.style.display = 'flex';
+                    card.closest('.services-tab').style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Проверяем, есть ли видимые карточки в каждой вкладке
+            serviceTabs.forEach(tab => {
+                const visibleCards = tab.querySelectorAll('.service-card[style="display: flex;"]').length;
+                if (visibleCards === 0) {
+                    tab.style.display = 'none';
+                }
+            });
+        }
+        
+        // Инициализация фильтра при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            // Показываем все услуги при первой загрузке
+            filterServices();
+            
+            // Назначаем обработчик на кнопку фильтра
+            document.getElementById('apply-filter').addEventListener('click', filterServices);
+            
+            // Добавляем обработчик нажатия Enter в поле поиска
+            document.getElementById('search-filter').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    filterServices();
+                }
+            });
+        });
+    </script>
+    <script src="app.js"></script>
+    <script src="accessibility.js"></script>
+
+
+    <div class="accessibility-panel">
+    <div class="accessibility-menu" id="accessibilityMenu">
+        <div class="accessibility-option" onclick="toggleAccessibilityMode()">
+            <i class="fas fa-eye"></i>
+            <span>Увеличенный текст</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleHighContrast()">
+            <i class="fas fa-adjust"></i>
+            <span>Высокая контрастность</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleLightTheme()">
+            <i class="fas fa-sun"></i>
+            <span>Светлая тема</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleReducedMotion()">
+            <i class="fas fa-stop-circle"></i>
+            <span>Уменьшить анимации</span>
+        </div>
+        <div class="accessibility-option" onclick="resetAccessibility()">
+            <i class="fas fa-undo"></i>
+            <span>Сбросить настройки</span>
+        </div>
+    </div>
+    <button class="accessibility-btn" id="accessibilityBtn" aria-label="Настройки доступности">
+        <i class="fas fa-universal-access"></i>
+    </button>
+</div>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поддержка - IntelligentPC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="accessibility.css">
+    <style>
+        /* Стили для горизонтального расположения карточек */
+        .support-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #4facfe rgba(0,0,0,0.1);
+        }
+        
+        .support-card {
+            flex: 0 0 auto;
+            width: 300px;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Стили для новой структуры */
+        .support-structure {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .support-main {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid #4facfe;
+        }
+        
+        .support-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .status-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #4facfe;
+        }
+        
+        /* Убираем пульсацию */
+        .support-icon .icon-pulse,
+        .contact-info.pulse,
+        .logo .hologram-effect {
+            display: none;
+        }
+        
+        /* Стили для статусов */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .status.online {
+            color: #00ff88;
+        }
+        
+        .status.warning {
+            color: #ffcc00;
+        }
+        
+        /* Адаптация */
+        @media (max-width: 768px) {
+            .support-structure {
+                grid-template-columns: 1fr;
+            }
+            
+            .support-grid {
+                flex-wrap: wrap;
+            }
+            
+            .support-card {
+                width: 100%;
+            }
+        }
+        
+        /* Стили для скролла */
+        .support-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .support-grid::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 3px;
+        }
+        
+        .support-grid::-webkit-scrollbar-thumb {
+            background-color: #4facfe;
+            border-radius: 3px;
+        }
+
+        /* Обновленные стили для кнопки "Наверх" */
+    .back-to-top {
+        position: fixed;
+        bottom: 90px; /* Остается выше кнопки доступности */
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 999;
+        border: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
+    
+    .back-to-top:hover {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(79, 172, 254, 0.7);
+    }
+    
+    .back-to-top:active {
+        transform: translateY(1px);
+    }
+    
+    .back-to-top.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+   
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <header class="holographic">
+        <div class="header-container">
+            <div class="logo" data-text="IntelligentPC">
+                <a href="index.html" class="glow">IntelligentPC</a>
+            </div>
+            
+            <div class="header-right">
+                <div class="contact-info">
+                    <i class="fas fa-phone-alt"></i> 
+                    <span class="neon-text">+7 (962) 910-91-44</span>
+                </div>
+                
+                <nav class="cyber-nav">
+                    <a href="support.html" class="nav-btn active">
+                        <i class="fas fa-headset"></i>
+                        <span>Поддержка</span>
+                    </a>
+                    <a href="servers.html" class="nav-btn">
+                        <i class="fas fa-server"></i>
+                        <span>Серверы</span>
+                    </a>
+                    <a href="services.html" class="nav-btn">
+                        <i class="fas fa-cogs"></i>
+                        <span>Услуги</span>
+                    </a>
+                    <a href="cart.html" class="nav-btn cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Корзина</span>
+                        <span class="cart-counter">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="support-container">
+            <h1 class="page-title neon-text">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</h1>
+            
+            <div class="support-structure">
+                <div class="support-main">
+                    <h2 class="section-title">ЦЕНТР ПОДДЕРЖКИ</h2>
+                    <p class="section-subtitle">Выберите наиболее удобный способ связи</p>
+                    
+                    <div class="support-grid">
+                        <div class="support-card glass-panel">
+                            <div class="support-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h2>ОНЛАЙН-ЧАТ</h2>
+                            <p>Мгновенная связь с техническим специалистом в режиме реального времени</p>
+                            <div class="support-status">
+                                <span class="status online"><i class="fas fa-circle"></i> ОНЛАЙН</span>
+                                <span>Среднее время ответа: 2 мин</span>
+                            </div>
+                            <button class="cyber-button" id="start-chat">
+                                <i class="fas fa-comments"></i>
+                                <span>НАЧАТЬ ЧАТ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="support-card glass-panel">
+                            <div class="support-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h2>ТИКЕТ-СИСТЕМА</h2>
+                            <p>Официальный запрос в техническую поддержку с отслеживанием статуса</p>
+                            <div class="support-status">
+                                <span>Ответ в течение 24 часов</span>
+                            </div>
+                            <button class="cyber-button" id="create-ticket">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span>СОЗДАТЬ ТИКЕТ</span>
+                            </button>
+                        </div>
+                        
+                        <div class="support-card glass-panel">
+                            <div class="support-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <h2>ТЕЛЕФОННАЯ ЛИНИЯ</h2>
+                            <p>Прямая связь с инженером поддержки для срочных вопросов</p>
+                            <div class="support-status">
+                                <span class="status online"><i class="fas fa-circle"></i> ДОСТУПЕН</span>
+                                <span i class="fas fa-phone" href="tel:+79629109144">+7 (962) 910-91-44</span>
+                            </div>
+                            <button class="cyber-button" id="call-support">
+                                <i class="fas fa-phone"></i>
+                                <span>ПОЗВОНИТЬ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="support-sidebar">
+                    <div class="status-card glass-panel">
+                        <h3><i class="fas fa-robot"></i> AI-ПОМОЩНИК</h3>
+                        <p>Наш виртуальный ассистент может помочь с базовыми вопросами 24/7</p>
+                        <div class="ai-features">
+                            <p><i class="fas fa-check"></i> Ответы на частые вопросы</p>
+                            <p><i class="fas fa-check"></i> Диагностика проблем</p>
+                            <p><i class="fas fa-check"></i> Руководства и инструкции</p>
+                        </div>
+                        <button class="cyber-button small" id="ask-ai">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>ЗАДАТЬ ВОПРОС</span>
+                        </button>
+                    </div>
+                    
+                    <div class="status-card glass-panel">
+                        <h3><i class="fas fa-chart-line"></i> СТАТУС СИСТЕМ</h3>
+                        <div class="system-status">
+                            <p><span class="status online"><i class="fas fa-circle"></i> Конфигуратор</span> - Работает</p>
+                            <p><span class="status online"><i class="fas fa-circle"></i> Личный кабинет</span> - Работает</p>
+                            <p><span class="status warning"><i class="fas fa-circle"></i> Платежная система</span> - Частичные ограничения</p>
+                        </div>
+                        <button class="cyber-button small" id="refresh-status">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>ОБНОВИТЬ</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-section glass-panel">
+                <h2 class="section-title">ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Как узнать статус моего заказа?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Вы можете отслеживать статус вашего заказа в личном кабинете или через нашего AI-ассистента, предоставив номер заказа.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Какие гарантии предоставляются на сборки?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Все наши сборки имеют гарантию 3 года. Подробности можно уточнить в разделе "Гарантия" или у нашего консультанта.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Как вернуть товар?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Вы можете оформить возврат через личный кабинет в течение 14 дней с момента получения заказа, если товар не был в употреблении.</p>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>КОНТАКТЫ</h3>
+                <div class="footer-contact">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+7 (962) 910-91-44</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Москва, Ленинский пр-т 45</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-clock"></i>
+                    <span>24/7 доступ</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>НАВИГАЦИЯ</h3>
+                <ul class="footer-nav">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="config.html">Конфигуратор</a></li>
+                    <li><a href="servers.html">Серверы</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>ТЕХНОЛОГИИ</h3>
+                <div class="tech-tags">
+                    <span>AI</span>
+                    <span>Quantum</span>
+                    <span>Neural</span>
+                    <span>VR-ready</span>
+                    <span>Blockchain</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>СОЦСЕТИ</h3>
+                <div class="social-grid">
+                    <a href="https://vk.com/magnoliagod" class="social-icon"><i class="fab fa-vk"></i></a>
+                    <a href="https://t.me/magnoliagod" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://github.com/tapo4eqq" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                <span>© 2025 INTELLIGENTPC | QUANTUM COMPUTING DIVISION</span>
+                <span id="counter">VISITORS: 0</span>
+            </div>
+            <div class="footer-code">
+                <span>SYSTEM STATUS: <span class="online">ONLINE</span></span>
+                <span>VERSION: 3.1.4</span>
+            </div>
+        </div>
+    </footer>
+
+<button class="back-to-top" title="Наверх" aria-label="Вернуться к началу страницы">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+
+
+
+
+    <script>
+    // Скрипт для кнопки "Наверх" (можно также вынести в отдельный файл)
+    document.addEventListener('DOMContentLoaded', function() {
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        if (backToTopButton) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('active');
+                } else {
+                    backToTopButton.classList.remove('active');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+
+
+        // Анимация для FAQ
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                question.querySelector('i').classList.toggle('fa-chevron-up');
+            });
+        });
+
+        // Работающие кнопки поддержки
+        document.getElementById('start-chat').addEventListener('click', () => {
+            alert('Чат с поддержкой будет открыт в новом окне. Пожалуйста, дождитесь соединения с оператором.');
+            // Здесь можно добавить код для открытия чата
+        });
+
+        document.getElementById('create-ticket').addEventListener('click', () => {
+            window.location.href = 'ticket.html'; // Перенаправление на страницу создания тикета
+        });
+
+        document.getElementById('call-support').addEventListener('click', () => {
+            alert('Инициируется звонок на номер: +7 (962) 910-91-44');
+            // Здесь можно добавить код для инициации звонка
+        });
+
+        document.getElementById('ask-ai').addEventListener('click', () => {
+            window.location.href = 'ai-assistant.html'; // Перенаправление на AI-ассистента
+        });
+
+        document.getElementById('refresh-status').addEventListener('click', () => {
+            alert('Статус систем обновлен');
+            // Здесь можно добавить код для обновления статуса
+        });
+
+        // Счетчик посещений
+        let visitCount = localStorage.getItem('visitCount') || 0;
+        visitCount++;
+        localStorage.setItem('visitCount', visitCount);
+        document.getElementById('counter').textContent = `VISITORS: ${visitCount}`;
+    </script>
+    <script src="app.js"></script>
+    <script src="accessibility.js"></script>
+
+
+    <div class="accessibility-panel">
+    <div class="accessibility-menu" id="accessibilityMenu">
+        <div class="accessibility-option" onclick="toggleAccessibilityMode()">
+            <i class="fas fa-eye"></i>
+            <span>Увеличенный текст</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleHighContrast()">
+            <i class="fas fa-adjust"></i>
+            <span>Высокая контрастность</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleLightTheme()">
+            <i class="fas fa-sun"></i>
+            <span>Светлая тема</span>
+        </div>
+        <div class="accessibility-option" onclick="toggleReducedMotion()">
+            <i class="fas fa-stop-circle"></i>
+            <span>Уменьшить анимации</span>
+        </div>
+        <div class="accessibility-option" onclick="resetAccessibility()">
+            <i class="fas fa-undo"></i>
+            <span>Сбросить настройки</span>
+        </div>
+    </div>
+    <button class="accessibility-btn" id="accessibilityBtn" aria-label="Настройки доступности">
+        <i class="fas fa-universal-access"></i>
+    </button>
+</div>
+</body>
+</html>

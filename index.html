@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelligentPC | Футуристичные сборки ПК</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="accessibility.css">
+    <style>
+        /* Стили для панели доступности */
+        .accessibility-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .accessibility-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.7);
+            transition: all 0.3s;
+        }
+        
+        .accessibility-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .accessibility-menu {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: rgba(20, 20, 40, 0.95);
+            border: 1px solid #4facfe;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .accessibility-menu.active {
+            display: flex;
+        }
+        
+        .accessibility-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .accessibility-option:hover {
+            background: rgba(79, 172, 254, 0.2);
+        }
+        
+        .accessibility-option i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Стили для режима доступности */
+        .accessibility-mode {
+            font-size: 18px !important;
+            line-height: 1.6 !important;
+        }
+        
+        .high-contrast {
+            background: #000 !important;
+            color: #fff !important;
+        }
+        
+        .high-contrast .glass-panel,
+        .high-contrast .cyber-card,
+        .high-contrast .feature-card,
+        .high-contrast .service-item {
+            background: #111 !important;
+            border: 2px solid #fff !important;
+            color: #fff !important;
+        }
+        
+        .high-contrast a,
+        .high-contrast .neon-text,
+        .high-contrast .glow-text {
+            color: #0ff !important;
+            text-shadow: 0 0 5px #0ff !important;
+        }
+        
+        .high-contrast .cyber-button {
+            background: #00f !important;
+            color: #fff !important;
+            border: 2px solid #0ff !important;
+        }
+        
+        .light-theme {
+            background: #f5f5f5 !important;
+            color: #333 !important;
+        }
+        
+        .light-theme .glass-panel,
+        .light-theme .cyber-card,
+        .light-theme .feature-card,
+        .light-theme .service-item {
+            background: #fff !important;
+            border: 1px solid #ddd !important;
+            color: #333 !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+        }
+        
+        .light-theme a,
+        .light-theme .neon-text,
+        .light-theme .glow-text {
+            color: #0066cc !important;
+            text-shadow: none !important;
+        }
+        
+        .light-theme .cyber-button {
+            background: #0066cc !important;
+            color: #fff !important;
+            border: none !important;
+        }
+        
+        /* Скрыть анимации в режиме доступности */
+        .accessibility-reduced-motion * {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        /* Кнопка "Наверх" */
+        .to-top-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .to-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+/* Стили для кнопки "Наверх" */
+    .back-to-top {
+        position: fixed;
+        bottom: 90px; /* Изменено с 30px на 90px, чтобы не пересекалась с кнопкой доступности */
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(45deg, #00f2fe, #4facfe);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(79, 172, 254, 0.7);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+        border: none;
+    }
+    
+    .back-to-top:hover {
+        background: linear-gradient(45deg, #4facfe, #00f2fe);
+        transform: translateY(-3px);
+    }
+    
+    .back-to-top.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="matrix-bg"></div>
+    
+    <!-- Кнопка "Наверх" -->
+    <button class="to-top-btn" title="Наверх" aria-label="Вернуться к началу страницы">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Панель доступности -->
+    <div class="accessibility-panel">
+        <div class="accessibility-menu" id="accessibilityMenu">
+            <div class="accessibility-option" onclick="toggleAccessibilityMode()">
+                <i class="fas fa-eye"></i>
+                <span>Увеличенный текст</span>
+            </div>
+            <div class="accessibility-option" onclick="toggleHighContrast()">
+                <i class="fas fa-adjust"></i>
+                <span>Высокая контрастность</span>
+            </div>
+            <div class="accessibility-option" onclick="toggleLightTheme()">
+                <i class="fas fa-sun"></i>
+                <span>Светлая тема</span>
+            </div>
+            <div class="accessibility-option" onclick="toggleReducedMotion()">
+                <i class="fas fa-stop-circle"></i>
+                <span>Уменьшить анимации</span>
+            </div>
+            <div class="accessibility-option" onclick="resetAccessibility()">
+                <i class="fas fa-undo"></i>
+                <span>Сбросить настройки</span>
+            </div>
+        </div>
+        <button class="accessibility-btn" id="accessibilityBtn" aria-label="Настройки доступности">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+    
+ <header class="holographic">
+        <div class="header-container">
+            <div class="logo" data-text="IntelligentPC">
+                <span class="glow">IntelligentPC</span>
+                <div class="hologram-effect"></div>
+            </div>
+            
+            <div class="header-right">
+                <div class="contact-info pulse">
+                    <i class="fas fa-phone-alt"></i> 
+                    <span class="neon-text">+7 (962) 910-91-44</span>
+                </div>
+                
+                <!-- Навигация с иконками -->
+                <nav class="cyber-nav">
+                    <a href="support.html" class="nav-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Поддержка</span>
+                        <div class="nav-pulse"></div>
+                    </a>
+                    <a href="servers.html" class="nav-btn">
+                        <i class="fas fa-server"></i>
+                        <span>Серверы</span>
+                    </a>
+                    <a href="services.html" class="nav-btn">
+                        <i class="fas fa-cogs"></i>
+                        <span>Услуги</span>
+                    </a>
+                    <a href="cart.html" class="nav-btn cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Корзина</span>
+                        <span class="cart-counter">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Боковая панель с эффектом стекла -->
+        <div class="left-column glass-panel">
+            <div class="category-block cyber-card">
+                <h3><i class="fas fa-desktop"></i> Сборки компьютеров</h3>
+                <ul class="cyber-list">
+                    <li>
+                        <a href="config.html" class="cyber-link">
+                            <i class="fas fa-sliders-h"></i>
+                            <span>Конфигуратор</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="sborki-v-nalichii.html" class="cyber-link">
+                            <i class="fas fa-box-open"></i>
+                            <span>Сборки в наличии</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-block cyber-card">
+                <h3><i class="fas fa-filter"></i> Подобрать под</h3>
+                <ul class="cyber-list">
+                    <li>
+                        <a href="gaming.html" class="cyber-link">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Под игры</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="school.html" class="cyber-link">
+                            <i class="fas fa-book"></i>
+                            <span>Под учебу</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="streaming.html" class="cyber-link">
+                            <i class="fas fa-video"></i>
+                            <span>Для стриминга</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-block cyber-card">
+                <h3><i class="fas fa-ruble-sign"></i> Подобрать по цене</h3>
+                <ul class="cyber-list">
+                    <li>
+                        <a href="upto150k.html" class="cyber-link">
+                            <span>до 150.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="upto250k.html" class="cyber-link">
+                            <span>до 250.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="upto500k.html" class="cyber-link">
+                            <span>до 500.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="upto750k.html" class="cyber-link">
+                            <span>до 750.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="upto1m.html" class="cyber-link">
+                            <span>до 1.000.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="overto1m.html" class="cyber-link">
+                            <span>свыше 1.000.000 ₽</span>
+                            <div class="link-arrow">></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="right-column">
+            <!-- Герой-секция с анимацией -->
+            <section class="hero cyber-hero">
+                <div class="hero-content">
+                    <h1 class="glow-text">СОБЕРИТЕ <span class="neon-accent">БУДУЩЕЕ</span> СЕГОДНЯ</h1>
+                    <p class="subtitle">ИНДИВИДУАЛЬНЫЕ СБОРКИ С ИСКУССТВЕННЫМ ИНТЕЛЛЕКТОМ</p>
+                    <a href="config.html" class="cyber-button pulse">
+                        <span>НАЧАТЬ КОНФИГУРАЦИЮ</span>
+                        <div class="button-border"></div>
+                    </a>
+                </div>
+                <div class="hero-ai">
+                    <div class="ai-circle"></div>
+                    <div class="ai-pulse"></div>
+                </div>
+            </section>
+
+            <!-- Особенности с анимацией -->
+            <section class="features cyber-features">
+                <div class="feature-card holographic">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>ГАРАНТИЯ 3.0</h3>
+                    <p>Автоматизированная система гарантийного обслуживания</p>
+                    <div class="feature-code">#WARRANTY_AI</div>
+                </div>
+                
+                <div class="feature-card holographic">
+                    <div class="feature-icon">
+                        <i class="fas fa-truck"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>ДОСТАВКА DRONE</h3>
+                    <p>Беспилотная доставка в течение 24 часов</p>
+                    <div class="feature-code">#QUANTUM_LOGISTICS</div>
+                </div>
+                
+                <div class="feature-card holographic">
+                    <div class="feature-icon">
+                        <i class="fas fa-cog"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>ИИ-КОНФИГУРАТОР</h3>
+                    <p>Нейросеть подберет оптимальную конфигурацию</p>
+                    <div class="feature-code">#AI_ASSISTANT</div>
+                </div>
+            </section>
+
+            <!-- Популярные категории -->
+            <div class="services-block cyber-grid">
+                <h2 class="section-title cyber-title">
+                    <span>ПОПУЛЯРНЫЕ КАТЕГОРИИ</span>
+                    <div class="title-line"></div>
+                </h2>
+                
+                <a href="gaming.html" class="service-item-link cyber-service">
+                    <div class="service-item">
+                        <div class="service-image">
+                            <img src="pic/команата.jpg" alt="Для игр">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="service-info">
+                            <h3>ИГРОВЫЕ СИСТЕМЫ</h3>
+                            <p>Максимальная производительность для виртуальных миров</p>
+                            <div class="service-tech">
+                                <span>RTX 5090</span>
+                                <span>AI-оптимизация</span>
+                                <span>240 FPS</span>
+                            </div>
+                        </div>
+                        <div class="service-access">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="school.html" class="service-item-link cyber-service">
+                    <div class="service-item">
+                        <div class="service-image">
+                            <img src="pic/for school.png" alt="Для учебы">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="service-info">
+                            <h3>КВАНТОВЫЕ РАБОЧИЕ СТАНЦИИ</h3>
+                            <p>Для обучения и профессиональной работы</p>
+                            <div class="service-tech">
+                                <span>AI-ассистент</span>
+                                <span>VR-ready</span>
+                                <span>Безопасность</span>
+                            </div>
+                        </div>
+                        <div class="service-access">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="config.html" class="service-item-link cyber-service">
+                    <div class="service-item">
+                        <div class="service-image">
+                            <img src="pic/configuratior.png" alt="Настройка конфигурации">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="service-info">
+                            <h3>NEURAL CONFIGURATOR</h3>
+                            <p>Создайте уникальную конфигурацию с помощью ИИ</p>
+                            <div class="service-tech">
+                                <span>AI-подбор</span>
+                                <span>AR-просмотр</span>
+                                <span>3D-сборка</span>
+                            </div>
+                        </div>
+                        <div class="service-access">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Футуристичная корзина -->
+        <aside id="cart" class="cyber-cart">
+            <div class="cart-header">
+                <h2>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>ЦИФРОВАЯ КОРЗИНА</span>
+                </h2>
+                <div class="cart-close">×</div>
+            </div>
+            
+            <div class="cart-scroll">
+                <ul id="cart-items" class="cyber-items">
+                    <!-- Товары будут добавляться здесь -->
+                    <li class="empty-cart">
+                        <i class="fas fa-microchip"></i>
+                        <span>КОРЗИНА ПУСТА</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="cart-footer">
+                <div id="cart-total" class="cyber-total">
+                    <span>ИТОГО:</span>
+                    <span>0 ₽</span>
+                </div>
+                <button id="clear-cart-button" class="cyber-button danger">
+                    <span>ОЧИСТИТЬ</span>
+                    <div class="button-border"></div>
+                </button>
+                <button class="cyber-button checkout">
+                    <span>ОПЛАТИТЬ</span>
+                    <div class="button-border"></div>
+                </button>
+            </div>
+        </aside>
+    </main>
+
+
+    <footer class="cyber-footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>КОНТАКТЫ</h3>
+                <div class="footer-contact">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+7 (962) 910-91-44</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Москва, Ленинский пр-т 45</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-clock"></i>
+                    <span>24/7 доступ</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>НАВИГАЦИЯ</h3>
+                <ul class="footer-nav">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="config.html">Конфигуратор</a></li>
+                    <li><a href="servers.html">Серверы</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>ТЕХНОЛОГИИ</h3>
+                <div class="tech-tags">
+                    <span>AI</span>
+                    <span>Quantum</span>
+                    <span>Neural</span>
+                    <span>VR-ready</span>
+                    <span>Blockchain</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>СОЦСЕТИ</h3>
+                <div class="social-grid">
+                    <a href="https://vk.com/magnoliagod" class="social-icon"><i class="fab fa-vk"></i></a>
+                    <a href="https://t.me/magnoliagod" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://github.com/tapo4eqq" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                <span>© 2025 INTELLIGENTPC | QUANTUM COMPUTING DIVISION</span>
+                <span id="counter">VISITORS: 0</span>
+            </div>
+            <div class="footer-code">
+                <span>SYSTEM STATUS: <span class="online">ONLINE</span></span>
+                <span>VERSION: 3.1.4</span>
+            </div>
+        </div>
+    </footer>
+
+<div class="back-to-top" title="Наверх" aria-label="Вернуться к началу страницы">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+
+    <script src="app.js"></script>
+    <script>
+
+
+   // Обновленный скрипт для кнопки "Наверх"
+    document.addEventListener('DOMContentLoaded', function() {
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        // Более плавное появление/исчезновение
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+        
+        // Плавная прокрутка с учетом производительности
+        backToTopButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+
+        // Счетчик посещений
+        let visitCount = localStorage.getItem('visitCount') || 0;
+        visitCount++;
+        localStorage.setItem('visitCount', visitCount);
+        document.getElementById('counter').textContent = `VISITORS: ${visitCount}`;
+        
+        // Анимация для футуристичного интерфейса
+        document.querySelectorAll('.cyber-button').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.classList.add('active');
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.classList.remove('active');
+            });
+        });
+        
+        // Панель доступности
+        const accessibilityBtn = document.getElementById('accessibilityBtn');
+        const accessibilityMenu = document.getElementById('accessibilityMenu');
+        
+        accessibilityBtn.addEventListener('click', function() {
+            accessibilityMenu.classList.toggle('active');
+        });
+        
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.accessibility-panel')) {
+                accessibilityMenu.classList.remove('active');
+            }
+        });
+        
+        // Функции доступности
+        function toggleAccessibilityMode() {
+            document.body.classList.toggle('accessibility-mode');
+            localStorage.setItem('accessibilityMode', document.body.classList.contains('accessibility-mode'));
+            accessibilityMenu.classList.remove('active');
+        }
+        
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+            accessibilityMenu.classList.remove('active');
+        }
+        
+        function toggleLightTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('lightTheme', document.body.classList.contains('light-theme'));
+            accessibilityMenu.classList.remove('active');
+        }
+        
+        function toggleReducedMotion() {
+            document.body.classList.toggle('accessibility-reduced-motion');
+            localStorage.setItem('reducedMotion', document.body.classList.contains('accessibility-reduced-motion'));
+            accessibilityMenu.classList.remove('active');
+        }
+        
+        function resetAccessibility() {
+            document.body.classList.remove('accessibility-mode', 'high-contrast', 'light-theme', 'accessibility-reduced-motion');
+            localStorage.removeItem('accessibilityMode');
+            localStorage.removeItem('highContrast');
+            localStorage.removeItem('lightTheme');
+            localStorage.removeItem('reducedMotion');
+            accessibilityMenu.classList.remove('active');
+        }
+        
+        // Восстановление настроек при загрузке
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('accessibilityMode') === 'true') {
+                document.body.classList.add('accessibility-mode');
+            }
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+            if (localStorage.getItem('lightTheme') === 'true') {
+                document.body.classList.add('light-theme');
+            }
+            if (localStorage.getItem('reducedMotion') === 'true') {
+                document.body.classList.add('accessibility-reduced-motion');
+            }
+        });
+        
+       
+    </script>
+</body>
+</html>
